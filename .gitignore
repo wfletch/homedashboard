@@ -60,3 +60,6 @@ database.sqlite
 homedashboard.db
 storage/
 .databases
+# Dev Artifacts
+_ide_helper.php
+_ide_helper_models.php
