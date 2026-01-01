@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
+    <title>Life</title>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 </head>
 <body>
 
-<h1>Dashboard</h1>
+<h1>Warren's Time 2026</h1>
 
 <button id="openBacklogEntryModalBtn">Add Backlog Entry</button>
 <button id="openStartTaskModalBtn">Start Task</button>
