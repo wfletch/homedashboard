@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CompletedTask;
 use App\Models\Tag;
+use App\Models\Project;
 
 class CompletedTaskController extends Controller
 {
     public function getAllCompletedTasks()
     {
-        $completed_tasks = CompletedTask::with('project')->orderBy('project_id')->get();
+        $completed_tasks = CompletedTask::with('project')
+            ->orderBy('iso_week')
+            ->orderBy('project_id')
+            ->get()
+            ->sortKeysDesc();
+
+
         return view('tasks._completed_task', ['completedTasks' => $completed_tasks]);
     }
 
@@ -21,6 +28,7 @@ class CompletedTaskController extends Controller
             'project_id' => ['required', 'integer'],
             'duration' => ['required', 'numeric'],
             'notes'      => ['nullable', 'string', 'max:5000'],
+            'title' => ['nullable', 'string', 'max:255'],
         ]);
 
         // Do Some minor Formatting on duration
@@ -31,15 +39,35 @@ class CompletedTaskController extends Controller
         // Redirect back to dashboard
         return redirect('/');
     }
-    public function updateCompletedTaskTags(Request $request, CompletedTask $completed_task)
+
+    public function editCompletedTaskView(CompletedTask $completedTask)
     {
-        $request->validate([
-            'tag_ids' => ['array'],
-            'tag_ids.*' => ['exists:tags,id'],
+        $projects = Project::where('enabled', true)
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        return view('tasks._edit_completed_task', compact(
+            'completedTask',
+            'projects'
+        ));
+    }
+    public function updateCompletedTask(Request $request, CompletedTask $completedTask)
+    {
+        $validated = $request->validate([
+            'project_id' => ['required', 'exists:projects,id'],
+            'duration'   => ['required', 'numeric'],
+            'notes'      => ['nullable', 'string'],
+            'title'      => ['nullable', 'string'],
         ]);
 
-        $completed_task->tags()->sync($request->tag_ids);
+        $completedTask->update($validated);
 
         return response()->noContent();
+    }
+    public function destroyCompletedTask(CompletedTask $completedTask)
+    {
+        $completedTask->delete();
+
+        return redirect('/');
     }
 }

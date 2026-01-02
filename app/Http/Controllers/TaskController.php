@@ -23,11 +23,13 @@ class TaskController extends Controller
         $validated = $request->validate([
         'project_id' => ['required', 'integer'],
         'notes'      => ['nullable', 'string', 'max:5000'],
+        'title' => ['nullable', 'string', 'max:255'],
     ]);
 
     Task::create([
         'project_id' => $validated['project_id'],
         'notes'      => $validated['notes'] ?? null,
+        'title'      => $validated['title'] ?? null,
         'started_at' => now(),
     ]);
 
@@ -63,6 +65,7 @@ class TaskController extends Controller
                 'project_id' => $task->project_id,
                 'notes'      => $task->notes,
                 'started_at' => $task->started_at,
+                'title' => $task->title,
                 'ended_at'   => $endedAt,
                 'duration'   => $durationHours,
             ]);

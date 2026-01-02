@@ -20,6 +20,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById('editCompletedTaskModal')
+      .addEventListener('htmx:afterSwap', function () {
+          console.log('Target swapped');
+          this.classList.remove('hidden');
+          this.classList.add('visible');
+      });
+});
 document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("startTaskModal");
     const openBtn = document.getElementById("openStartTaskModalBtn");

@@ -20,8 +20,11 @@ Route::get('/tasks/current-task', [TaskController::class, 'getCurrentTask']);
 
 //Completed Task
 Route::get('/completed-tasks', [CompletedTaskController::class, 'getAllCompletedTasks']);
-Route::put('/completed-tasks/{completed_task}/tags', [CompletedTaskController::class, 'updateCompletedTaskTags']);
+Route::get('/completed-tasks/{completed_task}/edit',[CompletedTaskController::class, 'editCompletedTaskView']);
+Route::put('/completed-tasks/{completed_task}', [CompletedTaskController::class, 'updateCompletedTask']);
 Route::post('/completed-tasks/add-completed-task', [CompletedTaskController::class, 'addCompletedTask']);
+
+Route::delete('/completed-tasks/{completedTask}',[CompletedTaskController::class, 'destroyCompletedTask']);
 
 //Tag
 Route::get('/tags', [TagController::class, 'getAllTags']);

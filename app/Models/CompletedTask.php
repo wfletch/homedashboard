@@ -36,6 +36,7 @@ class CompletedTask extends Model
 {
     protected $fillable = [
         'project_id',
+        'title',
         'duration',
         'notes',
         'tags',
@@ -57,24 +58,28 @@ class CompletedTask extends Model
     {
         return $this->belongsTo(Project::class);
     }
-    protected $appends = ['iso_week' , 'duration_human'];
+    protected $appends = ['iso_week' , 'duration_human', 'day_of_year'];
 
-        public function getIsoWeekAttribute(): string
-        {
-            return $this->created_at->format('o-\WW');
-        }
+    public function getDayOfYearAttribute(): string
+    {
+        return sprintf('%03d', $this->created_at->dayOfYear);
+    }
+    public function getIsoWeekAttribute(): string
+    {
+        return $this->created_at->format('o-\WW');
+    }
 
-        public function getDurationHumanAttribute(): string
-        {
-            $hours = $this->duration; // decimal hours like 0.75
+    public function getDurationHumanAttribute(): string
+    {
+        $hours = $this->duration; // decimal hours like 0.75
 
-            $interval = CarbonInterval::seconds(
-                    (int) round($hours * 3600)
-                )->cascade();
+        $interval = CarbonInterval::seconds(
+                (int) round($hours * 3600)
+            )->cascade();
 
-            return $interval->forHumans([
-                'short' => true,
-                'minimumUnit' => 'minute',
-            ]);
-        }
+        return $interval->forHumans([
+            'short' => true,
+            'minimumUnit' => 'minute',
+        ]);
+    }
 }

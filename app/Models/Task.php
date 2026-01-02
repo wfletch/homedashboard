@@ -34,6 +34,7 @@ class Task extends Model
         'started_at',
         'stopped_at',
         'project_id',
+        'title',
         'notes',
     ];
 
@@ -45,35 +46,33 @@ class Task extends Model
     {
         return $this->belongsTo(Project::class);
     }
-    protected $appends = ['iso_week', 'current_duration', 'current_duration_human'];
+    protected $appends = ['iso_week', 'day_of_year', 'current_duration', 'current_duration_human'];
 
-        public function getIsoWeekAttribute(): string
-        {
-            return $this->created_at->format('o-\WW');
-        }
+    public function getDayOfYearAttribute(): string
+    {
+        return sprintf('%03d', $this->created_at->dayOfYear);
+    }
+    public function getIsoWeekAttribute(): string
+    {
+        return $this->created_at->format('o-\WW');
+    }
 
-        public function getCurrentDurationAttribute(): float
-        {
-            return round($this->created_at
-                              ->diffInMinutes(now()) / 60,
-                          2
-            );
-        }
+    public function getCurrentDurationAttribute(): float
+    {
+        return round($this->created_at
+                          ->diffInMinutes(now()) / 60,
+                      2
+        );
+    }
 
-        public function getCurrentDurationHumanAttribute(): string
-        {
-            $hours = round($this->created_at
-                              ->diffInMinutes(now()) / 60,
-                          2
-            );
+    public function getCurrentDurationHumanAttribute(): string
+    {
+        $seconds = $this->created_at->diffInSeconds(now());
 
-            $interval = CarbonInterval::seconds(
-                    (int) round($hours * 3600)
-                )->cascade();
-
-            return $interval->forHumans([
-                'short' => true,'minimumUnit' => 'minute',
-            ]);
-        }
+        $interval = CarbonInterval::seconds($seconds)->cascade();
+        return $interval->forHumans([
+            'short' => true,'minimumUnit' => 'seconds',
+        ]);
+    }
 
 }

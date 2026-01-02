@@ -3,6 +3,7 @@
 <head>
     <title>Life</title>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <script src="{{ asset('js/vendor/htmx.js') }}"></script>
 </head>
 <body>
 
@@ -29,6 +30,14 @@
     </div>
 @endif
 
+<div
+    id="editCompletedTaskModal"
+    class="modal"
+    hx-on:htmx:afterSwap="
+        console.log('Target content swapped');
+        this.classList.remove('hidden');
+    "
+></div>
 @if ($completedTasks->isEmpty())
     <p>No Completed Tasks.</p>
 @else
@@ -51,9 +60,6 @@
     </div>
 @endif
 
-<script src="{{ asset('js/dashboard.js') }}"></script>
-<script src="{{ asset('js/vendor/htmx.js') }}"></script>
-</body>
 <div id="startTaskModal" class="modal">
     <div class="modal-content">
         <span id="closeStartTaskModalBtn" class="close">&times;</span>
@@ -79,6 +85,15 @@
                 </select>
             </label>
 
+            <label>
+            Title
+                <input
+                    type="text"
+                    name="title"
+                    maxlength="255"
+                    placeholder="Optional title"
+                >
+            </label>
             <label>
                 Notes
                 <textarea name="notes" rows="4">{{ old('notes') }}</textarea>
@@ -113,6 +128,15 @@
             </label>
 
             <label>
+                Title
+                <input
+                    type="text"
+                    name="title"
+                    maxlength="255"
+                    placeholder="Optional title"
+                >
+            </label>
+            <label>
                 Duration (hours)
                 <input type="number" step="0.25" name="duration" required>
             </label>
@@ -126,4 +150,7 @@
         </form>
     </div>
 </div>
+
+<script src="{{ asset('js/dashboard.js') }}"></script>
+</body>
 </html>
