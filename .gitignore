@@ -59,7 +59,7 @@ auth.json
 database.sqlite
 homedashboard.db
 storage/
-database/
+database/*.sqlite
 .databases
 # Dev Artifacts
 _ide_helper.php
