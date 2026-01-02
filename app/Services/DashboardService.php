@@ -1,13 +1,13 @@
 <?php
 namespace App\Services;
 
-use App\Models\ProjectDuration;
+use App\Models\CompletedTask;
 
 class DashboardService
 {
-    public function getProjectDurations()
+    public function getCompletedTasks()
     {
-        return ProjectDuration::all()
+        return CompletedTask::all()
             ->groupBy('project_id')
             ->map(fn ($group) => [
                 'project_id' => $group->first()->project_id,

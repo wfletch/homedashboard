@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\CarbonInterval;
 
 /**
  * @property int $id
@@ -22,6 +23,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereStartedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereStoppedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereUpdatedAt($value)
+ * @property-read float $current_duration
+ * @property-read string $current_duration_human
+ * @property-read string $iso_week
  * @mixin \Eloquent
  */
 class Task extends Model
@@ -37,4 +41,39 @@ class Task extends Model
         'started_at' => 'datetime',
         'stopped_at' => 'datetime',
     ];
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
+    protected $appends = ['iso_week', 'current_duration', 'current_duration_human'];
+
+        public function getIsoWeekAttribute(): string
+        {
+            return $this->created_at->format('o-\WW');
+        }
+
+        public function getCurrentDurationAttribute(): float
+        {
+            return round($this->created_at
+                              ->diffInMinutes(now()) / 60,
+                          2
+            );
+        }
+
+        public function getCurrentDurationHumanAttribute(): string
+        {
+            $hours = round($this->created_at
+                              ->diffInMinutes(now()) / 60,
+                          2
+            );
+
+            $interval = CarbonInterval::seconds(
+                    (int) round($hours * 3600)
+                )->cascade();
+
+            return $interval->forHumans([
+                'short' => true,'minimumUnit' => 'minute',
+            ]);
+        }
+
 }

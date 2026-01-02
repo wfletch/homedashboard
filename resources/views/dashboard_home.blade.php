@@ -9,10 +9,10 @@
 <h1>Warren's Time 2026</h1>
 
 <button id="openBacklogEntryModalBtn">Add Backlog Entry</button>
-<button id="openStartTaskModalBtn">Start Task</button>
+<button id="openStartTaskModalBtn" {{ !$runningTask ? '' : 'disabled' }}>Start Task</button>
 
 
-<form method="POST" action="/dashboard/end-task">
+<form method="POST" action="/tasks/end-task">
     @csrf
     <button type="submit" {{ $runningTask ? '' : 'disabled' }}>
         End Task
@@ -29,76 +29,91 @@
     </div>
 @endif
 
-@if ($durations->isEmpty())
-    <p>No project durations found.</p>
+@if ($completedTasks->isEmpty())
+    <p>No Completed Tasks.</p>
 @else
-    <table border="1" cellpadding="6">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Project ID</th>
-                <th>Week</th>
-                <th>Duration</th>
-                <th>Notes</th>
-                <th>Tags</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($durations as $duration)
-                <tr>
-                    <td>{{ $duration->id }}</td>
-                    <td>{{ $duration->project_id }}</td>
-                    <td>{{ $duration->iso_week}}</td>
-                    <td>{{ $duration->duration }}</td>
-                    <td>{{ $duration->notes ?? '—' }}</td>
-                    <td>{{ $duration->tags ?? '—' }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div
+        id="current-task"
+        hx-get="/tasks/current-task"
+        hx-trigger="load, every 5s"
+        hx-swap="innerHTML"
+    >
+        @include('tasks._current_task', ['runningTask' => $runningTask])
+    </div>
+
+    <div
+        id="completed-task"
+        hx-get="/completed-tasks"
+        hx-trigger="load, every 15s"
+        hx-swap="innerHTML"
+    >
+        @include('tasks._completed_task', ['completedTasks' => $completedTasks])
+    </div>
 @endif
 
 <script src="{{ asset('js/dashboard.js') }}"></script>
+<script src="{{ asset('js/vendor/htmx.js') }}"></script>
 </body>
-
 <div id="startTaskModal" class="modal">
-    @csrf
     <div class="modal-content">
         <span id="closeStartTaskModalBtn" class="close">&times;</span>
 
         <h2>Start Task</h2>
-        <form method="POST" action="/dashboard/start-task">
+
+        <form method="POST" action="/tasks/start-task">
             @csrf
 
             <label>
-                Project ID
-                <input type="number" name="project_id" required>
+                Project
+                <select name="project_id" required>
+                    <option value="" disabled selected>
+                        Select a project
+                    </option>
+
+                    @foreach ($projects as $project)
+                        <option value="{{ $project->id }}"
+                            @selected(old('project_id') == $project->id)>
+                            {{ $project->name }}
+                        </option>
+                    @endforeach
+                </select>
             </label>
 
             <label>
                 Notes
-                <textarea name="notes" rows="4"></textarea>
+                <textarea name="notes" rows="4">{{ old('notes') }}</textarea>
             </label>
+
             <button type="submit">Start</button>
         </form>
     </div>
 </div>
 <div id="addBacklogEntryModal" class="modal">
-    @csrf
     <div class="modal-content">
         <span id="closeBacklogEntryModalBtn" class="close">&times;</span>
 
         <h2>Add Backlogged Entry</h2>
-        <form method="POST" action="/dashboard/project-duration">
+
+        <form method="POST" action="/completed-tasks/add-completed-task">
             @csrf
 
             <label>
-                Project ID
-                <input type="number" name="project_id" required>
+                Project
+                <select name="project_id" required>
+                    <option value="" disabled selected>
+                        Select a project
+                    </option>
+
+                    @foreach ($projects as $project)
+                        <option value="{{ $project->id }}">
+                            {{ $project->name }}
+                        </option>
+                    @endforeach
+                </select>
             </label>
 
             <label>
-                Duration
+                Duration (hours)
                 <input type="number" step="0.25" name="duration" required>
             </label>
 
@@ -106,6 +121,7 @@
                 Notes
                 <textarea name="notes" rows="4"></textarea>
             </label>
+
             <button type="submit">Save</button>
         </form>
     </div>
