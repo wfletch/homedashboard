@@ -32,6 +32,12 @@ class ProjectSeeder extends Seeder
         ]);
 
         Project::firstOrCreate([
+            'name'     => 'Visualizer',
+            'category' => 'programming',
+            'enabled'  => true,
+        ]);
+
+        Project::firstOrCreate([
             'name'     => 'Open Source',
             'category' => 'programming',
             'enabled'  => true,
