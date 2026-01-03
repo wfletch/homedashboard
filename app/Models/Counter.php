@@ -27,6 +27,9 @@ use Illuminate\Database\Eloquent\Model;
 class Counter extends Model
 {
     protected $fillable = ['name', 'goal', 'enabled'];
+    protected $casts = [
+        'last_entry_at' => 'datetime',
+    ];
     public function entries()
     {
         return $this->hasMany(CounterEntry::class);

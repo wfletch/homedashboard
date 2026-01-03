@@ -17,7 +17,10 @@ class CounterController extends Controller
     }
     public function getAllCounters()
     {
-        $counters = Counter::withCount('entries')->get();
+        $counters = Counter::where('enabled', true)
+            ->withCount('entries')
+            ->withMax('entries as last_entry_at', 'created_at')
+            ->get();
         return view('counters._table', compact('counters'));
     }
     public function getCounter(Counter $counter)

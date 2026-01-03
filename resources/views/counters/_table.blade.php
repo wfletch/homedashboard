@@ -4,6 +4,7 @@
             <th>Counter Name</th>
             <th>Goal</th>
             <th>Progress</th>
+            <th>Last Entry</th>
             <th>Edit</th>
         </tr>
     </thead>
@@ -13,6 +14,9 @@
             <td>{{ $counter->name }}</td>
             <td>{{ $counter->goal ?? '–' }}</td>
             <td>{{ $counter->entries_count }}</td>
+            <td>
+                {{ optional($counter->last_entry_at)?->format('Y-m-d') ?? '–' }}
+            </td>
             <td>
                 <button
                     hx-get="/counters/{{ $counter->id }}/edit"
