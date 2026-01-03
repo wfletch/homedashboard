@@ -147,6 +147,12 @@ table {
     /* justify-content: space-between; */
     gap: 1rem;
 }
+.edit-counter-entry-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 
 .edit-counter-entry-row > label > :first-child{
     min-width: 100px;

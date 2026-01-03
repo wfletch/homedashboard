@@ -1,22 +1,27 @@
 <div class="modal-content">
-    <h2>{{ $counter->name }}</h2>
-
-    <p>
-        {{ $counter->entries->count() }}
-        /
-        {{ $counter->goal ?? '–' }}
-    </p>
-
+    <span class="close"
+          onclick="this.closest('.modal').classList.remove('visible')">
+        &times;
+    </span>
     <form
         class="form-row"
         hx-post="/counters/{{ $counter->id }}/entries"
         hx-target="#editCounterModal"
         hx-swap="innerHTML"
     >
-        @csrf
-        <button type="submit">
-            ➕ Add Entry
-        </button>
+        <div class ="edit-counter-entry-header"
+                @csrf
+
+                <h2>{{ $counter->name }}</h2>
+                <p>
+                    {{ $counter->entries->count() }}
+                    /
+                    {{ $counter->goal ?? '–' }}
+                </p>
+                <button type="submit">
+                    ➕ Add Entry
+                </button>
+        </div>
     </form>
         @foreach ($counter->entries as $entry)
             <div class = "edit-counter-entry-row">
@@ -59,9 +64,5 @@
             </div>
         @endforeach
 
-    <span class="close"
-          onclick="this.closest('.modal').classList.remove('visible')">
-        &times;
-    </span>
 </div>
 

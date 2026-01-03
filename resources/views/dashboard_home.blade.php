@@ -88,7 +88,10 @@
 
         <h2>Start Task</h2>
 
-        <form method="POST" action="/tasks/start-task">
+        <form method="POST"
+            action="/tasks/start-task"
+            class="edit-current-task-form"
+        >
             @csrf
 
             <label>
@@ -131,7 +134,11 @@
 
         <h2>Add Backlogged Entry</h2>
 
-        <form method="POST" action="/completed-tasks/add-completed-task">
+        <form method="POST"
+            action="/completed-tasks/add-completed-task"
+            class="edit-current-task-form"
+            >
+
             @csrf
 
             <label>

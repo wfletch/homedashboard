@@ -3,7 +3,7 @@
           onclick="this.closest('.modal').classList.remove('visible')">
         &times;
     </span>
-    <h2>Edit Completed Task</h2>
+    <h2>Edit Completed Task: {{$completedTask->title}}</h2>
     <form
     class="edit-current-task-form"
     method="POST"
