@@ -30,6 +30,10 @@ use Carbon\CarbonInterval;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CompletedTask whereStartedAt($value)
  * @property-read int|null $tags_count
  * @property-read string $duration_human
+ * @property string|null $title
+ * @property-read string $day_of_year
+ * @property-read \App\Models\Project|null $project
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CompletedTask whereTitle($value)
  * @mixin \Eloquent
  */
 class CompletedTask extends Model

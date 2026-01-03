@@ -30,6 +30,15 @@
     </div>
 @endif
 
+
+<div
+    id="editCounterModal"
+    class="modal"
+    hx-on:htmx:afterSwap="
+        console.log('Target content swapped');
+        this.classList.remove('hidden');
+    "
+></div>
 <div
     id="editCompletedTaskModal"
     class="modal"
@@ -38,6 +47,19 @@
         this.classList.remove('hidden');
     "
 ></div>
+
+@if ($counters->isEmpty())
+    <p>No Counters.</p>
+@else
+    <div
+        id="counters-table-container"
+        hx-get="/counters"
+        hx-trigger="load, every 5s"
+        hx-swap="innerHTML"
+    >
+        @include('tasks._current_task', ['runningTask' => $runningTask])
+    </div>
+@endif
 @if ($completedTasks->isEmpty())
     <p>No Completed Tasks.</p>
 @else
@@ -47,7 +69,7 @@
         hx-trigger="load, every 5s"
         hx-swap="innerHTML"
     >
-        @include('tasks._current_task', ['runningTask' => $runningTask])
+        @include('counters._table', ['counters' => $counters])
     </div>
 
     <div

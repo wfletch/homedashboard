@@ -9,6 +9,7 @@ use App\Models\CompletedTask;
 use App\Models\Task;
 use App\Models\Tag;
 use App\Models\Project;
+use App\Models\Counter;
 
 class DashboardController extends Controller
 {
@@ -17,6 +18,9 @@ class DashboardController extends Controller
         // Load ALL rows
         $completedTasks= CompletedTask::all();
 
+        $counters= Counter::where('enabled', true)
+            ->orderBy('id')
+            ->get();
         $tags = Tag::where('enabled', true)
             ->orderBy('name')
             ->get(['id', 'name']);
@@ -31,6 +35,7 @@ class DashboardController extends Controller
             'runningTask' => $runningTask,
             'projects' => $projects,
             'tags' => $tags,
+            'counters' => $counters,
         ]);
     }
 

@@ -26,6 +26,10 @@ use Carbon\CarbonInterval;
  * @property-read float $current_duration
  * @property-read string $current_duration_human
  * @property-read string $iso_week
+ * @property string|null $title
+ * @property-read string $day_of_year
+ * @property-read \App\Models\Project|null $project
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereTitle($value)
  * @mixin \Eloquent
  */
 class Task extends Model

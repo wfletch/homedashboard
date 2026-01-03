@@ -6,6 +6,9 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\CompletedTaskController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\CounterController;
+use App\Http\Controllers\CounterEntryController;
+
 
 
 
@@ -33,3 +36,16 @@ Route::put('/tags/{tag}', [TagController::class, 'updateTag']);
 //Project
 Route::get('/projects', [ProjectController::class, 'listAllProjects']);
 Route::put('/projects{project}', [ProjectController::class, 'updateProject']);
+
+//Counters && CounterEntries
+
+Route::get('/counters', [CounterController::class, 'getAllCounters']);
+Route::get('/counters/{counter}/edit', [CounterController::class, 'editCounterEntriesView']);
+Route::get('/counters/{counter}', [CounterController::class, 'getCounter']);
+Route::post('/counters/{counter}/entries', [CounterController::class, 'addCounterEntry']);
+Route::delete('/counters/{counterEntry}', [CounterController::class, 'removeCounterEntry']);
+
+Route::patch(
+    '/counters/{counterEntry}',
+    [CounterController::class, 'updateCounterEntry']
+);
