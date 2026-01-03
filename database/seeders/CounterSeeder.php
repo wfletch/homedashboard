@@ -33,5 +33,37 @@ class CounterSeeder extends Seeder
             'name' => "Learn 52 Standards",
             'goal' => 52,
         ]);
+        Counter::firstOrCreate([
+            'name' => "Read 12 Books",
+            'goal' => 12,
+        ]);
+        Counter::firstOrCreate([
+            'name' => "Play 10 Indie Games",
+            'goal' => 10,
+        ]);
+        Counter::firstOrCreate([
+            'name' => "Have Sex 100 Times",
+            'goal' => 100,
+        ]);
+        Counter::firstOrCreate([
+            'name' => "Vist 5 Museums",
+            'goal' => 5,
+        ]);
+        Counter::firstOrCreate([
+            'name' => "Make 5 New Friends",
+            'goal' => 5,
+        ]);
+        Counter::firstOrCreate([
+            'name' => "Watch 5 Live Shows",
+            'goal' => 5,
+        ]);
+        Counter::firstOrCreate([
+            'name' => "Listen to 52 OSTs",
+            'goal' => 52,
+        ]);
+        Counter::firstOrCreate([
+            'name' => "Learn 10 'Normal' Songs",
+            'goal' => 10,
+        ]);
     }
 }

@@ -73,6 +73,6 @@ class TaskController extends Controller
             $task->delete();
         });
 
-        return redirect('/');
+        return redirect('/')->with('task_ended', true);
     }
 }

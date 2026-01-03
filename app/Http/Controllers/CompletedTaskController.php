@@ -39,7 +39,7 @@ class CompletedTaskController extends Controller
         CompletedTask::create($validated);
 
         // Redirect back to dashboard
-        return redirect('/');
+        return redirect('/')->with('task_ended', true);
     }
 
     public function editCompletedTaskView(CompletedTask $completedTask)

@@ -1,86 +1,104 @@
 /* High Level Globals */
-body {
-    font-family: sans-serif;
-}
 
 table {
     border-collapse: collapse;
 }
-/* Modals */
-.modal.visible {
-    display: block; /* or block */
-}
-.modal {
-    display: none;               /* hidden by default */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.4);
-}
-.modal-content {
-    background: #fff;
-    margin: 10% auto;
-    padding: 20px;
-    width: 90%;
-    max-height: 90vh;
-    max-width: 60rem; /* ~960px, only a cap */
-    border-radius: 6px;
-}
-.modal-sm .modal-content {
-    max-width: 30rem; /* ~480px */
-}
-
-.modal-md .modal-content {
-    max-width: 45rem; /* ~720px */
-}
-
-.modal-lg .modal-content {
-    max-width: 60rem; /* ~960px */
-}
-
-.modal-xl .modal-content {
-    max-width: 75rem; /* ~1200px */
-}
+.modal-box.modal-sm { max-width: 30rem; }
+.modal-box.modal-md { max-width: 45rem; }
+.modal-box.modal-lg { max-width: 60rem; }
+.modal-box.modal-xl { max-width: 75rem; }
 
 .close {
     float: right;
     font-size: 24px;
     cursor: pointer;
 }
-
-/* Current Task Rows*/
-.row-current {
-    background-color: #ffe6e6; /* soft pastel red */
-}
-.row-current-long-running {
-    background-color: #ffe6e6; /* soft pastel red */
-}
-/* Completed Task Rows*/
-.row-monday {
-    background-color: #e6fffa; /* mint */
+/* ===== LIGHT THEME ===== */
+[data-theme="light"] .row-current,
+[data-theme="light"] .row-current-long-running {
+    background-color: #ffe6e6;
 }
 
-.row-tuesday {
-    background-color: #e8f0ff; /* soft blue */
+[data-theme="light"] .row-monday {
+    background-color: #e6fffa;
 }
 
-.row-wednesday {
-    background-color: #f3e8ff; /* lavender */
+[data-theme="light"] .row-tuesday {
+    background-color: #e8f0ff;
 }
 
-.row-thursday {
-    background-color: #fff7e6; /* soft peach */
+[data-theme="light"] .row-wednesday {
+    background-color: #f3e8ff;
 }
 
-.row-friday {
-    background-color: #e6fff2; /* light green */
+[data-theme="light"] .row-thursday {
+    background-color: #fff7e6;
 }
 
-.row-weekend {
-    background-color: #f5f5f5; /* neutral gray */
+[data-theme="light"] .row-friday {
+    background-color: #e6fff2;
+}
+
+[data-theme="light"] .row-weekend {
+    background-color: #f5f5f5;
+}
+
+
+/* ===== DARK THEME ===== */
+[data-theme="dark"] .row-current,
+[data-theme="dark"] .row-current-long-running {
+    background-color: #4a1f1f;
+}
+
+[data-theme="dark"] .row-monday {
+    background-color: #1f3a36;
+}
+
+[data-theme="dark"] .row-tuesday {
+    background-color: #1e2a44;
+}
+
+[data-theme="dark"] .row-wednesday {
+    background-color: #33224a;
+}
+
+[data-theme="dark"] .row-thursday {
+    background-color: #4a3a1f;
+}
+
+[data-theme="dark"] .row-friday {
+    background-color: #1f3a2a;
+}
+
+[data-theme="dark"] .row-weekend {
+    background-color: #2a2a2a;
+}
+[data-theme] .row-current,
+[data-theme] .row-monday,
+[data-theme] .row-tuesday,
+[data-theme] .row-wednesday,
+[data-theme] .row-thursday,
+[data-theme] .row-friday,
+[data-theme] .row-weekend {
+    border-left: 4px solid rgba(0,0,0,0.08);
+}
+
+[data-theme="dark"] .row-current,
+[data-theme="dark"] .row-monday,
+[data-theme="dark"] .row-tuesday,
+[data-theme="dark"] .row-wednesday,
+[data-theme="dark"] .row-thursday,
+[data-theme="dark"] .row-friday,
+[data-theme="dark"] .row-weekend {
+    border-left-color: rgba(255,255,255,0.12);
+}
+
+[data-theme] tr:hover {
+    filter: brightness(0.97);
+}
+
+[data-theme="dark"] tr:hover {
+    filter: brightness(1.05);
 }
 /* Forms */
 .form-grid {
