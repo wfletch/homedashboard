@@ -1,3 +1,4 @@
+/* High Level Globals */
 body {
     font-family: sans-serif;
 }
@@ -5,6 +6,7 @@ body {
 table {
     border-collapse: collapse;
 }
+/* Modals */
 .modal.visible {
     display: block; /* or block */
 }
@@ -22,8 +24,25 @@ table {
     background: #fff;
     margin: 10% auto;
     padding: 20px;
-    width: 400px;
+    width: 90%;
+    max-height: 90vh;
+    max-width: 60rem; /* ~960px, only a cap */
     border-radius: 6px;
+}
+.modal-sm .modal-content {
+    max-width: 30rem; /* ~480px */
+}
+
+.modal-md .modal-content {
+    max-width: 45rem; /* ~720px */
+}
+
+.modal-lg .modal-content {
+    max-width: 60rem; /* ~960px */
+}
+
+.modal-xl .modal-content {
+    max-width: 75rem; /* ~1200px */
 }
 
 .close {
@@ -32,8 +51,11 @@ table {
     cursor: pointer;
 }
 
-/* Completed Task Rows*/
+/* Current Task Rows*/
 .row-current {
+    background-color: #ffe6e6; /* soft pastel red */
+}
+.row-current-long-running {
     background-color: #ffe6e6; /* soft pastel red */
 }
 /* Completed Task Rows*/
@@ -59,4 +81,84 @@ table {
 
 .row-weekend {
     background-color: #f5f5f5; /* neutral gray */
+}
+/* Forms */
+.form-grid {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.75rem 1rem;
+}
+
+.form-actions {
+    grid-column: 2;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-current-task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* Make each label a vertical group */
+.edit-current-task-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-weight: 500;
+}
+
+.edit-current-task-form input:focus,
+.edit-current-task-form textarea:focus,
+.edit-current-task-form select:focus {
+    outline: 2px solid #b3d4fc;
+    outline-offset: 1px;
+}
+/* Inputs should fill width */
+.edit-current-task-form select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.4rem 0.5rem;
+    font-size: 0.95rem;
+
+    /* normalize native select behavior */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+.edit-current-task-form input,
+/* .edit-current-task-form select, */
+.edit-current-task-form textarea {
+    width: 98%;
+    padding: 0.4rem 0.5rem;
+    font-size: 0.95rem;
+}
+
+/* Button spacing */
+.edit-current-task-form button {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+}
+/* Edit Counter Entries*/
+.edit-counter-entry-row {
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+    gap: 1rem;
+}
+
+.edit-counter-entry-row > label > :first-child{
+    min-width: 100px;
+}
+
+.edit-counter-entry-row > :first-child {
+    flex: 0 0 66%;
+}
+
+.edit-counter-entry-note-textarea {
+    width: 66%;
+    min-width: 0; /* important for flex layouts */
+    /* flex: 1 1 auto; */
+    /* min-width: 0; */
 }

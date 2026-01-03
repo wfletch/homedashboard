@@ -5,10 +5,11 @@
     </span>
     <h2>Edit Completed Task</h2>
     <form
+    class="edit-current-task-form"
     method="POST"
     action="/completed-tasks/{{ $completedTask->id }}"
     onsubmit="this.closest('.modal').classList.remove('visible')">
->
+
         @csrf
         @method('PUT')
 
@@ -23,13 +24,16 @@
                 @endforeach
             </select>
         </label>
-        <input
-            type="text"
-            name="title"
-            maxlength="255"
-            placeholder="Optional title"
-            value="{{ old('title', $completedTask->title) }}"
-        >
+        <label>
+            Title
+            <input
+                type="text"
+                name="title"
+                maxlength="255"
+                placeholder="Optional title"
+                value="{{ old('title', $completedTask->title) }}"
+            >
+            </label>
         <label>
             Duration (hours)
             <input type="number"
@@ -49,6 +53,7 @@
         </button>
     </form>
     <form
+        class="form-row"
         method="POST"
         action="/completed-tasks/{{ $completedTask->id }}"
         onsubmit="
