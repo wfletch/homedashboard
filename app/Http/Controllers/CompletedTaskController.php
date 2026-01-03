@@ -12,13 +12,15 @@ class CompletedTaskController extends Controller
     public function getAllCompletedTasks()
     {
         $completed_tasks = CompletedTask::with('project')
-            ->orderBy('iso_week')
-            ->orderBy('project_id')
-            ->get()
+            ->orderBy('day_of_week')
+            ->get();
+
+        $completedTasksByWeek = $completed_tasks
+            ->groupBy('iso_week')
             ->sortKeysDesc();
 
 
-        return view('tasks._completed_task', ['completedTasks' => $completed_tasks]);
+        return view('tasks._completed_task', ['completedTasks' => $completed_tasks, 'completedTasksByWeek' => $completedTasksByWeek]);
     }
 
     public function addCompletedTask(Request $request)

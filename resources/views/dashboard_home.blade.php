@@ -78,7 +78,7 @@
         hx-trigger="load, every 15s"
         hx-swap="innerHTML"
     >
-        @include('tasks._completed_task', ['completedTasks' => $completedTasks])
+        @include('tasks._completed_task', ['completedTasks' => $completedTasks, 'completedTasksByWeek' => $completedTasksByWeek])
     </div>
 @endif
 

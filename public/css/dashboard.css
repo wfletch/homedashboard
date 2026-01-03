@@ -31,3 +31,32 @@ table {
     font-size: 24px;
     cursor: pointer;
 }
+
+/* Completed Task Rows*/
+.row-current {
+    background-color: #ffe6e6; /* soft pastel red */
+}
+/* Completed Task Rows*/
+.row-monday {
+    background-color: #e6fffa; /* mint */
+}
+
+.row-tuesday {
+    background-color: #e8f0ff; /* soft blue */
+}
+
+.row-wednesday {
+    background-color: #f3e8ff; /* lavender */
+}
+
+.row-thursday {
+    background-color: #fff7e6; /* soft peach */
+}
+
+.row-friday {
+    background-color: #e6fff2; /* light green */
+}
+
+.row-weekend {
+    background-color: #f5f5f5; /* neutral gray */
+}

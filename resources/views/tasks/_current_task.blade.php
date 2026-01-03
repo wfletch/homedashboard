@@ -11,7 +11,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr class="row-current">
                 <td>{{ $runningTask->project->name}}</td>
                 <td>{{ $runningTask->iso_week}}_D{{$runningTask->day_of_year}}</td>
                 <td>{{ $runningTask->title}}</td>
