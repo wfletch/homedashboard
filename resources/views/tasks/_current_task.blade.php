@@ -1,5 +1,6 @@
 @if ($runningTask)
-    <table border="1" cellpadding="6" class="Running Task">
+
+    <table class="table table-bordered w-full">
         <thead>
             <tr>
                 <th>Project ID</th>

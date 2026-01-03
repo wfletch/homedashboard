@@ -1,65 +1,140 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Life</title>
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-    <script src="{{ asset('js/vendor/htmx.js') }}"></script>
-</head>
-<body>
+@extends('layouts.app')
 
-<h1>Warren's Time 2026</h1>
+@section('content')
+<header class="flex items-center justify-between gap-4 mt-6 mb-10 px-2 pb-4 border-b border-base-300">
+    <h1 class="text-2xl font-bold">
+        Warren’s Time 2026
+    </h1>
 
-<button id="openBacklogEntryModalBtn">Add Backlog Entry</button>
-<button id="openStartTaskModalBtn" {{ !$runningTask ? '' : 'disabled' }}>Start Task</button>
+    <div class="flex gap-3 mr-4">
+        {{-- Add Backlog Entry (always available) --}}
+        <button
+            class="btn-primary btn-outline btn-lg"
+            onclick="addBacklogEntryModal.showModal()">
+            ➕ Add Backlog Entry
+        </button>
+
+        {{-- Start / End Task toggle --}}
+        @if (!$runningTask)
+            {{-- START TASK --}}
+            <button
+                class="btn-secondary btn-outline btn-lg"
+                onclick="startTaskModal.showModal()">
+                ▶ Start Task
+            </button>
+        @else
+            {{-- END TASK --}}
+            <form
+                method="POST"
+                action="/tasks/end-task"
+                x-data
+                @submit.prevent="
+                    Swal.fire({
+                        title: 'End current task?',
+                        text: 'This will stop the timer and log the task.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, end it',
+                        cancelButtonText: 'Cancel',
+                        confirmButtonColor: '#ef4444',
+                        reverseButtons: true,
+                        showClass: {
+                            popup: 'animate__animated animate__pop'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOut'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $el.submit()
+                        }
+                    })
+                "
+            >
+                @csrf
+
+                <button
+                    type="submit"
+                    class="btn-primary btn-outline btn-lg bg-red-700">
+                    ⏹ End Task
+                </button>
+            </form>
+        @endif
 
 
-<form method="POST" action="/tasks/end-task">
-    @csrf
-    <button type="submit" {{ $runningTask ? '' : 'disabled' }}>
-        End Task
-    </button>
-</form>
+        <label class="swap swap-rotate text-xl cursor-pointer px-2 py-1 rounded-lg hover:bg-base-200 transition">
+            <input
+                type="checkbox"
+                x-data
+                @change="
+                    document.documentElement.setAttribute(
+                        'data-theme',
+                        $event.target.checked ? 'dark' : 'light'
+                    )
+                "
+            />
+
+            <!-- light -->
+            <span class="swap-off">🌞</span>
+
+            <!-- dark -->
+            <span class="swap-on">🌙</span>
+        </label>
+    </div>
+</header>
 
 @if ($errors->any())
-    <div style="color:red">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+    <div class="toast toast-bottom toast-end z-50">
+        @foreach ($errors->all() as $error)
+            <div
+                class="alert alert-error shadow-lg"
+                x-data
+                x-init="setTimeout(() => $el.remove(), 5000)"
+            >
+                <span>❌ {{ $error }}</span>
+            </div>
+        @endforeach
     </div>
 @endif
 
 
-<div
-    id="editCounterModal"
-    class="modal"
-    hx-on:htmx:afterSwap="
-        console.log('Target content swapped');
-        this.classList.remove('hidden');
-    "
-></div>
-<div
-    id="editCompletedTaskModal"
-    class="modal"
-    hx-on:htmx:afterSwap="
-        console.log('Target content swapped');
-        this.classList.remove('hidden');
-    "
-></div>
-
-@if ($counters->isEmpty())
-    <p>No Counters.</p>
-@else
-    <div
-        id="counters-table-container"
-        hx-get="/counters"
-        hx-trigger="load, every 5s"
-        hx-swap="innerHTML"
-    >
-        @include('tasks._current_task', ['runningTask' => $runningTask])
-    </div>
+@if (session('task_ended'))
+    <script>
+        window.__TASK_ENDED__ = true;
+    </script>
 @endif
+@section('title')
+    {{ $runningTask ? $runningTask->current_duration_human : 'Life' }}
+@endsection
+<dialog id="editCounterModal" class="modal">
+    <div class="modal-box modal-lg" id="editCounterModalContent">
+        {{-- HTMX content loads here --}}
+    </div>
+
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+
+<dialog id="editCompletedTaskModal" class="modal">
+    <div class="modal-box modal-lg" id="editCompletedTaskModalContent">
+        {{-- HTMX / Blade content goes here --}}
+    </div>
+
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+
+<div
+    id="counters-table-container"
+    hx-get="/counters"
+    hx-trigger="load, every 5s"
+    hx-swap="innerHTML"
+>
+    @include('tasks._current_task', ['runningTask' => $runningTask])
+</div>
+
 @if ($completedTasks->isEmpty())
     <p>No Completed Tasks.</p>
 @else
@@ -81,14 +156,20 @@
         @include('tasks._completed_task', ['completedTasks' => $completedTasks, 'completedTasksByWeek' => $completedTasksByWeek])
     </div>
 @endif
+<dialog id="startTaskModal" class="modal">
+    <div class="modal-box modal-lg">
 
-<div id="startTaskModal" class="modal">
-    <div class="modal-content">
-        <span id="closeStartTaskModalBtn" class="close">&times;</span>
+        {{-- Header --}}
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-bold">Start Task</h2>
 
-        <h2>Start Task</h2>
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost">✕</button>
+            </form>
+        </div>
 
-        <form method="POST"
+        <form
+            method="POST"
             action="/tasks/start-task"
             class="edit-current-task-form"
         >
@@ -111,7 +192,7 @@
             </label>
 
             <label>
-            Title
+                Title
                 <input
                     type="text"
                     name="title"
@@ -119,26 +200,39 @@
                     placeholder="Optional title"
                 >
             </label>
+
             <label>
                 Notes
                 <textarea name="notes" rows="4">{{ old('notes') }}</textarea>
             </label>
 
-            <button type="submit">Start</button>
+            <button type="submit" class="btn btn-primary">
+                Start
+            </button>
         </form>
     </div>
-</div>
-<div id="addBacklogEntryModal" class="modal">
-    <div class="modal-content">
-        <span id="closeBacklogEntryModalBtn" class="close">&times;</span>
 
-        <h2>Add Backlogged Entry</h2>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+<dialog id="addBacklogEntryModal" class="modal">
+    <div class="modal-box modal-lg">
 
-        <form method="POST"
+        {{-- Header --}}
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-bold">Add Backlogged Entry</h2>
+
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost">✕</button>
+            </form>
+        </div>
+
+        <form
+            method="POST"
             action="/completed-tasks/add-completed-task"
             class="edit-current-task-form"
-            >
-
+        >
             @csrf
 
             <label>
@@ -165,9 +259,15 @@
                     placeholder="Optional title"
                 >
             </label>
+
             <label>
                 Duration (hours)
-                <input type="number" step="0.25" name="duration" required>
+                <input
+                    type="number"
+                    step="0.25"
+                    name="duration"
+                    required
+                >
             </label>
 
             <label>
@@ -175,11 +275,23 @@
                 <textarea name="notes" rows="4"></textarea>
             </label>
 
-            <button type="submit">Save</button>
+            <button type="submit" class="btn btn-primary">
+                Save
+            </button>
         </form>
     </div>
-</div>
 
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+
+@endsection
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+@endpush
+
+@push('scripts')
 <script src="{{ asset('js/dashboard.js') }}"></script>
-</body>
-</html>
+@endpush
