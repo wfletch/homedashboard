@@ -18,7 +18,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("editSleepTimesModal");
+    const content = document.getElementById("editSleepTimesModalContent");
 
+    content.addEventListener("htmx:afterSwap", () => {
+        if (!modal.open) {
+            modal.showModal();
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("addNewSleepTimesModal");
+    const content = document.getElementById("addNewSleepTimesModalContent");
+
+    content.addEventListener("htmx:afterSwap", () => {
+        if (!modal.open) {
+            modal.showModal();
+        }
+    });
+});
 document.addEventListener("DOMContentLoaded", () => {
     const savedTheme = localStorage.getItem("theme") || "dark";
     document.documentElement.setAttribute("data-theme", savedTheme);

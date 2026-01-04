@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             ProjectSeeder::class,
             CounterSeeder::class,
+            SleepTimeSeeder::class,
         ]);
     }
 }

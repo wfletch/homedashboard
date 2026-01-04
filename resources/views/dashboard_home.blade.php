@@ -7,6 +7,14 @@
     </h1>
 
     <div class="flex gap-3 mr-4">
+
+        <button
+            class="btn btn-sm btn-primary"
+            hx-get="/sleep-times/create"
+            hx-target="#addNewSleepTimesModalContent"
+        >
+            ➕ Add Sleep Entry
+        </button>
         {{-- Add Backlog Entry (always available) --}}
         <button
             class="btn-primary btn-outline btn-lg"
@@ -106,6 +114,28 @@
 @section('title')
     {{ $runningTask ? $runningTask->current_duration_human : 'Life' }}
 @endsection
+
+<dialog id="editSleepTimesModal" class="modal">
+    <div class="modal-box modal-lg" id="editSleepTimesModalContent">
+        {{-- HTMX content loads here --}}
+    </div>
+
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+
+
+<dialog id="addNewSleepTimesModal" class="modal">
+    <div class="modal-box modal-lg" id="addNewSleepTimesModalContent">
+        {{-- HTMX content loads here --}}
+    </div>
+
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+
 <dialog id="editCounterModal" class="modal">
     <div class="modal-box modal-lg" id="editCounterModalContent">
         {{-- HTMX content loads here --}}
@@ -154,6 +184,17 @@
         hx-swap="innerHTML"
     >
         @include('tasks._completed_task', ['completedTasks' => $completedTasks, 'completedTasksByWeek' => $completedTasksByWeek])
+    </div>
+
+    <div
+        id="sleep-times"
+        hx-get="/sleep-times"
+        hx-trigger="load, every 15s"
+        hx-swap="innerHTML"
+    >
+        @include('sleep_times._sleep_times_table', [
+            'sleepTimesByWeek' => $sleepTimesByWeek
+        ])
     </div>
 @endif
 <dialog id="startTaskModal" class="modal">

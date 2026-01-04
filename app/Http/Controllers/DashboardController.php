@@ -10,6 +10,7 @@ use App\Models\Task;
 use App\Models\Tag;
 use App\Models\Project;
 use App\Models\Counter;
+use App\Models\SleepTime;
 
 class DashboardController extends Controller
 {
@@ -25,6 +26,12 @@ class DashboardController extends Controller
         $completedTasksByWeek = $completedTasks
             ->groupBy('iso_week')
             ->sortKeysDesc();
+
+        $sleepTimes = SleepTime::orderBy('day')->get();
+
+        $sleepTimesByWeek = $sleepTimes->groupBy(function ($sleep) {
+            return $sleep->day->format('o-\WW');
+        });
         $counters= Counter::where('enabled', true)
             ->orderBy('id')
             ->get();
@@ -44,6 +51,7 @@ class DashboardController extends Controller
             'projects' => $projects,
             'tags' => $tags,
             'counters' => $counters,
+            'sleepTimesByWeek' => $sleepTimesByWeek,
         ]);
     }
 

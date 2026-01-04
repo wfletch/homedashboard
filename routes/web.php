@@ -8,6 +8,7 @@ use App\Http\Controllers\CompletedTaskController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\CounterController;
 use App\Http\Controllers\CounterEntryController;
+use App\Http\Controllers\SleepTimeController;
 
 
 
@@ -49,3 +50,10 @@ Route::patch(
     '/counters/{counterEntry}',
     [CounterController::class, 'updateCounterEntry']
 );
+
+Route::get('/sleep-times', [SleepTimeController::class, 'getAllSleepTimesGroupedByWeek']);
+Route::get('/sleep-times/create', [SleepTimeController::class, 'createNewSleepTimeView']);
+Route::post('/sleep-times', [SleepTimeController::class, 'createNewSleepTime']);
+Route::get('/sleep-times/{sleepTime}/edit', [SleepTimeController::class, 'editSleepTimeView']);
+Route::put('/sleep-times/{sleepTime}', [SleepTimeController::class, 'editSleepTime']);
+Route::delete('/sleep-times/{sleepTime}', [SleepTimeController::class, 'removeSleepTimeEntry']);

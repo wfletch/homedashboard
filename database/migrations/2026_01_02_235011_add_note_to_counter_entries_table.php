@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::table('counter_entries', function (Blueprint $table) {
             $table->text('note')
-                  ->nullable()
+                  ->nullable();
         });
     }
 
