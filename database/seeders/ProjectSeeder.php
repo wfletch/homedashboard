@@ -26,6 +26,12 @@ class ProjectSeeder extends Seeder
         ]);
 
         Project::firstOrCreate([
+            'name'     => 'Nvim Configuration',
+            'category' => 'programming',
+            'enabled'  => true,
+        ]);
+
+        Project::firstOrCreate([
             'name'     => 'Music Song',
             'category' => 'music',
             'enabled'  => true,
