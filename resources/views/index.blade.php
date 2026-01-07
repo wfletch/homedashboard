@@ -239,7 +239,8 @@
                     type="text"
                     name="title"
                     maxlength="255"
-                    placeholder="Optional title"
+                    placeholder="Title (Required)"
+                    required
                 >
             </label>
 
