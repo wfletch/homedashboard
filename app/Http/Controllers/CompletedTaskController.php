@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CompletedTask;
+use Carbon\CarbonInterval;
 use App\Models\Tag;
 use App\Models\Project;
 
@@ -25,9 +26,27 @@ class CompletedTaskController extends Controller
             });
         $completedTasksByWeek = $completed_tasks
             ->groupBy('iso_week');
+        $dailyTotalsByWeek = $completed_tasks
+            ->groupBy('iso_week')
+            ->map(function ($tasksInWeek) {
+                return $tasksInWeek
+                    ->groupBy('day_of_week')
+                    ->map(function ($tasksInDay) {
+                        $hours = $tasksInDay->sum('duration');
+
+                        $interval = CarbonInterval::seconds(
+                            (int) round($hours * 3600)
+                        )->cascade();
+
+                        return $interval->forHumans([
+                            'short' => true,
+                            'minimumUnit' => 'minute',
+                        ]);
+                    });
+            });
 
 
-        return view('tasks._completed_task', ['completedTasks' => $completed_tasks, 'completedTasksByWeek' => $completedTasksByWeek]);
+        return view('tasks._completed_task', ['completedTasks' => $completed_tasks, 'dailyTotalsByWeek'    => $dailyTotalsByWeek,'completedTasksByWeek' => $completedTasksByWeek]);
     }
 
     public function addCompletedTask(Request $request)

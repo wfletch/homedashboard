@@ -177,16 +177,14 @@
     >
         @include('counters._table', ['counters' => $counters])
     </div>
-
     <div
         id="completed-task"
         hx-get="/completed-tasks"
-        hx-trigger="load, every 15s"
+        x-data="{ open: true }"
+        :hx-trigger="open ? 'load, every 15s' : null"
         hx-swap="innerHTML"
     >
-        @include('tasks._completed_task', ['completedTasks' => $completedTasks, 'completedTasksByWeek' => $completedTasksByWeek])
     </div>
-
     <div
         id="sleep-times"
         hx-get="/sleep-times"
