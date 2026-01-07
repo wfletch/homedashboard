@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CounterEntry whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CounterEntry whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CounterEntry whereUpdatedAt($value)
+ * @property string|null $note
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CounterEntry whereNote($value)
  * @mixin \Eloquent
  */
 class CounterEntry extends Model

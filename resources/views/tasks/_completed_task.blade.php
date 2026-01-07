@@ -54,7 +54,7 @@
 
                     <tr class="{{ $dayClass }}">
                         <td>{{ $task->project->name }}</td>
-                        <td>{{ $task->iso_week }}_D{{ $task->day_of_year }}</td>
+                        <td>{{ $task->iso_week }}_D{{ $task->day_of_week}}</td>
                         <td>{{ $task->title }}</td>
                         <td>{{ $task->duration_human }}</td>
                         <td>{{ $task->notes ?? '—' }}</td>

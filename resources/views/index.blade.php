@@ -35,6 +35,7 @@
             <form
                 method="POST"
                 action="/tasks/end-task"
+                class="nostyle"
                 x-data
                 @submit.prevent="
                     Swal.fire({
@@ -63,7 +64,7 @@
 
                 <button
                     type="submit"
-                    class="btn-primary btn-outline btn-lg bg-red-700">
+                    class="btn-secondary btn-outline btn-lg bg-red-700">
                     ⏹ End Task
                 </button>
             </form>

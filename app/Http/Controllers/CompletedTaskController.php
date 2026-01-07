@@ -11,13 +11,20 @@ class CompletedTaskController extends Controller
 {
     public function getAllCompletedTasks()
     {
-        $completed_tasks = CompletedTask::with('project')
-            ->orderBy('day_of_week')
-            ->get();
 
+        $completed_tasks = CompletedTask::with('project')
+            ->get()
+            ->sort(function ($a, $b) {
+                // 1️⃣ Compare week DESC
+                if ($a->iso_week !== $b->iso_week) {
+                    return strcmp($b->iso_week, $a->iso_week);
+                }
+
+                // 2️⃣ Same week → compare day ASC
+                return $a->day_of_week<=> $b->day_of_week;
+            });
         $completedTasksByWeek = $completed_tasks
-            ->groupBy('iso_week')
-            ->sortKeysDesc();
+            ->groupBy('iso_week');
 
 
         return view('tasks._completed_task', ['completedTasks' => $completed_tasks, 'completedTasksByWeek' => $completedTasksByWeek]);

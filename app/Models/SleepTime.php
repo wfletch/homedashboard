@@ -5,6 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property Carbon $day
+ * @property string $bed_time
+ * @property string $wake_time
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read float|null $sleep_hours
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SleepTime newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SleepTime newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SleepTime query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SleepTime whereBedTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SleepTime whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SleepTime whereDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SleepTime whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SleepTime whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SleepTime whereWakeTime($value)
+ * @mixin \Eloquent
+ */
 class SleepTime extends Model
 {
     protected $fillable = [

@@ -44,7 +44,7 @@ class DashboardController extends Controller
         $runningTask = Task::whereNull('stopped_at')
             ->latest('started_at')
             ->first();
-        return view('dashboard_home', [
+        return view('index', [
             'completedTasks' => $completedTasks,
             'completedTasksByWeek' => $completedTasksByWeek,
             'runningTask' => $runningTask,

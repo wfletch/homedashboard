@@ -45,6 +45,7 @@ class CompletedTask extends Model
         'notes',
         'tags',
         'started_at',
+        'created_at',
         'ended_at',
     ];
 
@@ -52,6 +53,7 @@ class CompletedTask extends Model
         'duration'   => 'decimal:2',
         'started_at' => 'datetime',
         'ended_at'   => 'datetime',
+        'created_at'   => 'datetime',
     ];
 
     public function tags()  {
@@ -62,7 +64,7 @@ class CompletedTask extends Model
     {
         return $this->belongsTo(Project::class);
     }
-    protected $appends = ['iso_week' , 'duration_human', 'day_of_year'];
+    protected $appends = ['iso_week' , 'duration_human', 'day_of_year', 'day_of_week'];
 
     public function getDayOfYearAttribute(): string
     {
@@ -70,7 +72,16 @@ class CompletedTask extends Model
     }
     public function getIsoWeekAttribute(): string
     {
-        return $this->created_at->format('o-\WW');
+        return sprintf(
+            '%d-W%02d',
+            $this->created_at->weekOfYear(),
+            $this->created_at->isoWeek
+        );
+    }
+    public function getDayOfWeekAttribute(): int
+    {
+        return $this->created_at->isoWeekday();
+        // return $this->created_at?->isoWeekday ?? 0;
     }
 
     public function getDurationHumanAttribute(): string
