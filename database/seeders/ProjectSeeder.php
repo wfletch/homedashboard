@@ -96,5 +96,17 @@ class ProjectSeeder extends Seeder
             'category' => 'test',
             'enabled'  => true,
         ]);
+
+        Project::firstOrCreate([
+            'name'     => 'Life Admin',
+            'category' => 'life',
+            'enabled'  => true,
+        ]);
+
+        Project::firstOrCreate([
+            'name'     => 'Gaming',
+            'category' => 'entertainment',
+            'enabled'  => true,
+        ]);
     }
 }
