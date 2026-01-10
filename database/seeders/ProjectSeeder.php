@@ -108,5 +108,11 @@ class ProjectSeeder extends Seeder
             'category' => 'entertainment',
             'enabled'  => true,
         ]);
+
+        Project::firstOrCreate([
+            'name'     => 'TV',
+            'category' => 'entertainment',
+            'enabled'  => true,
+        ]);
     }
 }
