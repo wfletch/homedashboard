@@ -25,40 +25,51 @@
         x-cloak
         class="mt-6"
     >
-        <table class="table table-bordered w-full">
-            <thead>
-                <tr>
-                    <th>Counter Name</th>
-                    <th>Goal</th>
-                    <th>Progress</th>
-                    <th>Last Entry</th>
-                    <th>Edit</th>
-                </tr>
-            </thead>
 
-            <tbody>
-                @foreach ($counters as $counter)
-                    <tr>
-                        <td>{{ $counter->name }}</td>
-                        <td>{{ $counter->goal ?? '–' }}</td>
-                        <td>{{ $counter->entries_count }}</td>
-                        <td>
-                            {{ optional($counter->last_entry_at)?->format('Y-m-d') ?? '–' }}
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-outline"
-                                hx-get="/counters/{{ $counter->id }}/edit"
-                                hx-target="#editCounterModalContent"
-                                _="on htmx:afterOnLoad call editCounterModal.showModal()"
-                            >
-                                ⓘ
-                            </button>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+<table class="table table-zebra w-full">
+    <thead>
+        <tr class="bg-base-200">
+            <th>Counter Name</th>
+            <th>Goal</th>
+            <th>Progress</th>
+            <th>Last Entry</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach ($counters as $counter)
+            <tr class="hover:bg-base-200 transition-colors">
+                <td class="font-medium">
+                    {{ $counter->name }}
+                </td>
+
+                <td>
+                    {{ $counter->goal ?? '–' }}
+                </td>
+
+                <td>
+                    {{ $counter->entries_count }}
+                </td>
+
+                <td>
+                    {{ optional($counter->last_entry_at)?->format('Y-m-d') ?? '–' }}
+                </td>
+
+                <td>
+                    <button
+                        class="btn btn-outline btn-sm"
+                        hx-get="/counters/{{ $counter->id }}/edit"
+                        hx-target="#editCounterModalContent"
+                        _="on htmx:afterOnLoad call editCounterModal.showModal()"
+                    >
+                        ⓘ
+                    </button>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
     </div>
 
 </div>

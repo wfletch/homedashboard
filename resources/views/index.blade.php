@@ -8,13 +8,6 @@
 
     <div class="flex gap-3 mr-4">
 
-        <button
-            class="btn btn-sm btn-primary"
-            hx-get="/sleep-times/create"
-            hx-target="#addNewSleepTimesModalContent"
-        >
-            ➕ Add Sleep Entry
-        </button>
         {{-- Add Backlog Entry (always available) --}}
         <button
             class="btn-primary btn-outline btn-lg"
@@ -185,16 +178,6 @@
         hx-swap="innerHTML"
     >
     </div>
-    <div
-        id="sleep-times"
-        hx-get="/sleep-times"
-        hx-trigger="load, every 15s"
-        hx-swap="innerHTML"
-    >
-        @include('sleep_times._sleep_times_table', [
-            'sleepTimesByWeek' => $sleepTimesByWeek
-        ])
-    </div>
 @endif
 <dialog id="startTaskModal" class="modal">
     <div class="modal-box modal-lg">
@@ -291,14 +274,19 @@
                 </select>
             </label>
 
-            <label>
-                Title
+            <label class="form-control w-full">
+                <span class="label-text">Title</span>
+
                 <input
                     type="text"
                     name="title"
                     maxlength="255"
-                    placeholder="Optional title"
-                >
+                    placeholder="feat: add counter reset"
+                    class="input input-bordered w-full"
+                    required
+                    pattern="^(feat|fix|docs|style|refactor|perf|test|chore)(\([a-z0-9\-]+\))?: .{1,}$"
+                    title="Use Conventional Commits: type(scope?): description"
+                />
             </label>
 
             <label>

@@ -9,7 +9,7 @@
     @click="open = !open"
 >
     <div class="text-2xl font-bold">
-        {{ str_replace('-W', ' – Week ', $isoWeek) }}
+        Week - {{ substr(str_replace('-W', '', $isoWeek),1); }}
     </div>
 
     <div

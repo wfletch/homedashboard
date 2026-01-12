@@ -31,6 +31,7 @@
 
     <div class="divider"></div>
 
+    <div class="space-y-4 max-h-[70vh] overflow-y-auto overflow-x-hidden scroll-smooth">
     {{-- Entries --}}
     @foreach ($counter->entries as $entry)
         <div class="flex gap-2 items-start">
