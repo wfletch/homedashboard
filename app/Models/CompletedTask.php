@@ -64,7 +64,7 @@ class CompletedTask extends Model
     {
         return $this->belongsTo(Project::class);
     }
-    protected $appends = ['iso_week' , 'duration_human', 'day_of_year', 'day_of_week'];
+    protected $appends = ['iso_week' , 'duration_human', 'day_of_year', 'day_of_week', 'day_of_week_name', 'human_day'];
 
     public function getDayOfYearAttribute(): string
     {
@@ -77,6 +77,14 @@ class CompletedTask extends Model
             $this->created_at->weekOfYear(),
             $this->created_at->isoWeek
         );
+    }
+    public function getDayOfWeekNameAttribute(): string
+    {
+        return strtolower($this->created_at->dayName ?? '');
+    }
+    public function getHumanDayAttribute(): string
+    {
+        return $this->created_at->format('l jS F');
     }
     public function getDayOfWeekAttribute(): int
     {

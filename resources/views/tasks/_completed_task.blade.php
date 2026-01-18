@@ -53,7 +53,15 @@
                     @if ($currentDay !== null && $task->day_of_year !== $currentDay)
                         <tr class="{{ $dayClass }}-summary row-summary">
                             <td colspan="3" class="text-right">
-                                Daily total
+                                <div class="flex justify-between w-full">
+                                    <span class="font-bold underline">
+                                        {{ $task->human_day}}
+                                    </span>
+
+                                    <span>
+                                        Daily total
+                                    </span>
+                                </div>
                             </td>
                             <td>
                                 {{ \Carbon\CarbonInterval::seconds($dailySeconds)
@@ -78,13 +86,12 @@
                     @php
                         $currentDay = $task->day_of_year;
 
-                        $dayClass = match ($task->day_of_year % 7) {
-                            1 => 'row-monday',
-                            2 => 'row-tuesday',
-                            3 => 'row-wednesday',
-                            4 => 'row-thursday',
-                            5 => 'row-friday',
-                            6,7 => 'row-weekend',
+                        $dayClass = match ($task->day_of_week_name) {
+                            'monday' => 'row-monday',
+                            'tuesday' => 'row-tuesday',
+                            'wednesday'    => 'row-wednesday',
+                            'thursday' => 'row-thursday',
+                            'friday' => 'row-friday',
                             default => 'row-weekend',
                         };
 

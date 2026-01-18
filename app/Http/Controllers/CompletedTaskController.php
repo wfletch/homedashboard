@@ -22,7 +22,7 @@ class CompletedTaskController extends Controller
                 }
 
                 // 2️⃣ Same week → compare day ASC
-                return $a->day_of_week<=> $b->day_of_week;
+                return $b->day_of_week<=> $a->day_of_week;
             });
         $completedTasksByWeek = $completed_tasks
             ->groupBy('iso_week');
