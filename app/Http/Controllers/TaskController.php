@@ -98,7 +98,7 @@ class TaskController extends Controller
             else {
                 return response()->json($completed_task, 200);
             }
-            return redirect('/')->with('task_ended', true);
         }
+        return redirect('/')->with('task_ended', true);
     }
 }

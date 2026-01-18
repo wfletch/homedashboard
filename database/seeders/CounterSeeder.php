@@ -69,5 +69,9 @@ class CounterSeeder extends Seeder
             'name' => "52 Goals for 2026",
             'goal' => 52,
         ]);
+        Counter::firstOrCreate([
+            'name' => "365 New Bands",
+            'goal' => 365,
+        ]);
     }
 }

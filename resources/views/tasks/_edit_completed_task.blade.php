@@ -57,8 +57,7 @@
 
         <label>
             Notes
-            <textarea name="notes" rows="4">
-            {{ $completedTask->notes }}</textarea>
+            <textarea name="notes" rows="4">{{ trim($completedTask->notes) }}</textarea>
         </label>
 
         <button type="submit" class="btn btn-success">

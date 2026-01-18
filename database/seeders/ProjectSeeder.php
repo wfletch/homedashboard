@@ -114,5 +114,15 @@ class ProjectSeeder extends Seeder
             'category' => 'entertainment',
             'enabled'  => true,
         ]);
+        Project::firstOrCreate([
+            'name'     => 'Out Of House',
+            'category' => 'break',
+            'enabled'  => true,
+        ]);
+        Project::firstOrCreate([
+            'name'     => 'Donating Time',
+            'category' => 'charity',
+            'enabled'  => true,
+        ]);
     }
 }
