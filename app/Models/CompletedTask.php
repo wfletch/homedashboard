@@ -34,6 +34,9 @@ use Carbon\CarbonInterval;
  * @property-read string $day_of_year
  * @property-read \App\Models\Project|null $project
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CompletedTask whereTitle($value)
+ * @property-read int $day_of_week
+ * @property-read string $day_of_week_name
+ * @property-read string $human_day
  * @mixin \Eloquent
  */
 class CompletedTask extends Model
@@ -56,14 +59,19 @@ class CompletedTask extends Model
         'created_at'   => 'datetime',
     ];
 
-    public function tags()  {
-        return $this->belongsToMany(Tag::class)
-                    ->where('enabled', true);
-    }
     public function project()
     {
         return $this->belongsTo(Project::class);
     }
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+    public function enabledTags()
+    {
+        return $this->tags()->where('enabled', true);
+    }
+
     protected $appends = ['iso_week' , 'duration_human', 'day_of_year', 'day_of_week', 'day_of_week_name', 'human_day'];
 
     public function getDayOfYearAttribute(): string

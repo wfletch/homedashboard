@@ -2,28 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Tag;
+use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
-    public function getAllTags()
+    /**
+     * List all tags (optionally grouped by category)
+     */
+    public function index()
     {
-        return Tag::orderBy('name')->get();
+        return Tag::orderBy('category')
+            ->orderBy('name')
+            ->get()
+            ->groupBy(fn ($tag) => $tag->category ?? 'uncategorized');
     }
 
-    public function getEnabledTags()
+    /**
+     * Create a new tag
+     */
+    public function store(Request $request)
     {
-        return Tag::where('enabled', true)->orderBy('name')->get();
-    }
-    public function updateTag(Request $request, Tag $tag)
-    {
-        $validated = $request->validate([ 'name'    => ['sometimes', 'string', 'max:255', 'unique:tags,name,' . $tag->id],
-            'enabled' => ['sometimes', 'boolean'],
+        $validated = $request->validate([
+            'name'     => 'required|string|max:50',
+            'category' => 'nullable|string|max:50',
+            'enabled'  => 'boolean',
         ]);
 
-        $tag->update($validated);
+        // Prevent duplicate (name + category)
+        $tag = Tag::firstOrCreate(
+            [
+                'name'     => $validated['name'],
+                'category' => $validated['category'] ?? null,
+            ],
+            [
+                'enabled' => $validated['enabled'] ?? true,
+            ]
+        );
 
-        return $tag;
+        return response()->json($tag, 201);
+    }
+
+    /**
+     * Toggle enabled/disabled state
+     */
+    public function toggle(Tag $tag)
+    {
+        $tag->update([
+            'enabled' => ! $tag->enabled,
+        ]);
+
+        return response()->json($tag);
+    }
+
+    /**
+     * Delete a tag (hard delete)
+     */
+    public function destroy(Tag $tag)
+    {
+        $tag->delete();
+
+        return response()->noContent();
     }
 }

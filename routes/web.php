@@ -9,6 +9,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\CounterController;
 use App\Http\Controllers\CounterEntryController;
 use App\Http\Controllers\SleepTimeController;
+use App\Http\Controllers\CompletedTaskTagController;
 
 
 
@@ -30,9 +31,6 @@ Route::post('/completed-tasks/add-completed-task', [CompletedTaskController::cla
 
 Route::delete('/completed-tasks/{completedTask}',[CompletedTaskController::class, 'destroyCompletedTask']);
 
-//Tag
-Route::get('/tags', [TagController::class, 'getAllTags']);
-Route::put('/tags/{tag}', [TagController::class, 'updateTag']);
 
 //Project
 Route::get('/projects', [ProjectController::class, 'listAllProjects']);
@@ -57,3 +55,16 @@ Route::post('/sleep-times', [SleepTimeController::class, 'createNewSleepTime']);
 Route::get('/sleep-times/{sleepTime}/edit', [SleepTimeController::class, 'editSleepTimeView']);
 Route::put('/sleep-times/{sleepTime}', [SleepTimeController::class, 'editSleepTime']);
 Route::delete('/sleep-times/{sleepTime}', [SleepTimeController::class, 'removeSleepTimeEntry']);
+
+# Tags
+Route::get('/tags', [TagController::class, 'index']);
+Route::post('/tags', [TagController::class, 'store']);
+Route::patch('/tags/{tag}/toggle', [TagController::class, 'toggle']);
+Route::delete('/tags/{tag}', [TagController::class, 'destroy']);
+# Completed Task #Tags
+
+Route::prefix('completed-tasks/{completedTask}')->group(function () {
+    Route::post('/tags', [CompletedTaskTagController::class, 'attach']);
+    Route::put('/tags',  [CompletedTaskTagController::class, 'sync']);
+    Route::delete('/tags/{tag}', [CompletedTaskTagController::class, 'detach']);
+});
